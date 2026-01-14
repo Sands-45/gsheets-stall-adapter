@@ -5,7 +5,7 @@ const list = async (props: {
   query?: string;
 }): Promise<UnifiedProductType[]> => {
   try {
-    console.log("running google sheets adapter");
+    console.log("running google sheets adapter products list");
     return [];
   } catch (error) {
     throw error;
