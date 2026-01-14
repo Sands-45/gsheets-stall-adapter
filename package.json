@@ -1,0 +1,25 @@
+{
+  "name": "google-sheets",
+  "type": "module",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "unpkg": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "bun build --minify src/index.ts --outdir dist",
+    "dev": "bun run 'stall.config.ts'"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@use-stall/types": "^0.2.8",
+    "chokidar": "^4.0.3",
+    "uuid": "^11.1.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {}
+}
