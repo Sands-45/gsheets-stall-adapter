@@ -188,7 +188,7 @@ const bulk_delete = async (props: {
   }
 };
 
-export const products = {
+export const locations = {
   list,
   retrieve,
   create,
