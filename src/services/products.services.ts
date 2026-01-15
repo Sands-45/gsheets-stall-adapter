@@ -9,7 +9,7 @@ const list = async (props: {
 }): Promise<UnifiedProductType[]> => {
   try {
     const { connector_config, query } = props;
-    const endpoint = `${BASE_URL}/products/list`;
+    const endpoint = `${BASE_URL}/products?${query}`;
 
     const res = await fetch(endpoint, {
       headers: {
