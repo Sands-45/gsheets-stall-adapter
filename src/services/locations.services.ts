@@ -66,6 +66,7 @@ const create = async (props: {
   data: UnifiedLocationType;
 }): Promise<UnifiedLocationType> => {
   try {
+    console.log("Creating location...");
     const { connector_config, data: location } = props;
     const endpoint = `${BASE_URL}/locations`;
 
