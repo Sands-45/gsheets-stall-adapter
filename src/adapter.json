@@ -4,7 +4,7 @@
   "name": "Google Sheets Adapter",
   "description": "Adapter for connecting google sheets and Stall",
   "keywords": ["google sheets", "sheets", "excel"],
-  "version": "0.0.1",
+  "version": "0.0.3",
   "authors": ["Sands"],
   "repo": "https://github.com/Sands-45/gsheets-stall-adapter",
   "homepage": "https://github.com/Sands-45/gsheets-stall-adapter",

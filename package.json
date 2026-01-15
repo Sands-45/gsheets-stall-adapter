@@ -1,7 +1,7 @@
 {
   "name": "google-sheets",
   "type": "module",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "dist/index.js",
   "module": "dist/index.js",
   "unpkg": "dist/index.js",
@@ -14,7 +14,7 @@
   },
   "devDependencies": {
     "@types/bun": "latest",
-    "@use-stall/types": "^0.2.8",
+    "@use-stall/types": "^0.2.9",
     "chokidar": "^4.0.3",
     "uuid": "^11.1.0"
   },
