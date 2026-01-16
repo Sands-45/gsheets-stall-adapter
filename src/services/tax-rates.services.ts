@@ -1,15 +1,15 @@
 import { BASE_URL } from "@/constants/default";
 import { get_error_message } from "@/lib/utils";
 import type { ConnectorConfigType } from "@/types/auth";
-import type { UnifiedLocationType } from "@use-stall/types";
+import type { UnifiedTaxRateType } from "@use-stall/types";
 
 const list = async (props: {
   connector_config: ConnectorConfigType;
   query?: string;
-}): Promise<UnifiedLocationType[]> => {
+}): Promise<UnifiedTaxRateType[]> => {
   try {
     const { connector_config, query } = props;
-    const endpoint = `${BASE_URL}/locations?${query}`;
+    const endpoint = `${BASE_URL}/taxes/rates?${query}`;
 
     const res = await fetch(endpoint, {
       headers: {
@@ -36,10 +36,10 @@ const list = async (props: {
 const retrieve = async (props: {
   connector_config: ConnectorConfigType;
   id: string;
-}): Promise<UnifiedLocationType> => {
+}): Promise<UnifiedTaxRateType> => {
   try {
     const { connector_config, id } = props;
-    const endpoint = `${BASE_URL}/locations?id=${id}`;
+    const endpoint = `${BASE_URL}/taxes/rates?id=${id}`;
 
     const res = await fetch(endpoint, {
       headers: {
@@ -55,7 +55,7 @@ const retrieve = async (props: {
       const message = data?.error || "We ran into an error !";
       throw new Error(message);
     }
-    return data as UnifiedLocationType;
+    return data as UnifiedTaxRateType;
   } catch (error) {
     throw error;
   }
@@ -63,11 +63,11 @@ const retrieve = async (props: {
 
 const create = async (props: {
   connector_config: ConnectorConfigType;
-  data: UnifiedLocationType;
-}): Promise<UnifiedLocationType> => {
+  data: UnifiedTaxRateType;
+}): Promise<UnifiedTaxRateType> => {
   try {
-    const { connector_config, data: location } = props;
-    const endpoint = `${BASE_URL}/locations`;
+    const { connector_config, data: rate } = props;
+    const endpoint = `${BASE_URL}/taxes/rates`;
 
     const res = await fetch(endpoint, {
       method: "POST",
@@ -76,7 +76,7 @@ const create = async (props: {
         spreadsheet_id: connector_config.api_key_value,
         refresh_token: connector_config.token,
       },
-      body: JSON.stringify(location),
+      body: JSON.stringify(rate),
     });
 
     const data = (await res.json()) as unknown as any;
@@ -86,7 +86,7 @@ const create = async (props: {
       throw new Error(message);
     }
 
-    return data as UnifiedLocationType;
+    return data as UnifiedTaxRateType;
   } catch (error) {
     throw error;
   }
@@ -95,11 +95,11 @@ const create = async (props: {
 const update = async (props: {
   connector_config: ConnectorConfigType;
   id: string;
-  data: Partial<UnifiedLocationType>;
-}): Promise<UnifiedLocationType> => {
+  data: Partial<UnifiedTaxRateType>;
+}): Promise<UnifiedTaxRateType> => {
   try {
-    const { connector_config, data: location, id } = props;
-    const endpoint = `${BASE_URL}/locations/${id}`;
+    const { connector_config, data: rate, id } = props;
+    const endpoint = `${BASE_URL}/taxes/rates/${id}`;
 
     const res = await fetch(endpoint, {
       method: "PUT",
@@ -108,7 +108,7 @@ const update = async (props: {
         spreadsheet_id: connector_config.api_key_value,
         refresh_token: connector_config.token,
       },
-      body: JSON.stringify(location),
+      body: JSON.stringify(rate),
     });
 
     const data = (await res.json()) as unknown as any;
@@ -118,7 +118,7 @@ const update = async (props: {
       throw new Error(message);
     }
 
-    return data as UnifiedLocationType;
+    return data as UnifiedTaxRateType;
   } catch (error) {
     throw error;
   }
@@ -130,7 +130,7 @@ const _delete = async (props: {
 }): Promise<void> => {
   try {
     const { connector_config, id } = props;
-    const endpoint = `${BASE_URL}/locations/${id}`;
+    const endpoint = `${BASE_URL}/taxes/rates/${id}`;
 
     const res = await fetch(endpoint, {
       method: "DELETE",
@@ -156,8 +156,8 @@ const _delete = async (props: {
 
 const bulk_create = async (props: {
   connector_config: ConnectorConfigType;
-  data: UnifiedLocationType[];
-}): Promise<UnifiedLocationType[]> => {
+  data: UnifiedTaxRateType[];
+}): Promise<UnifiedTaxRateType[]> => {
   try {
     return [];
   } catch (error) {
@@ -167,8 +167,8 @@ const bulk_create = async (props: {
 
 const bulk_update = async (props: {
   connector_config: ConnectorConfigType;
-  data: Array<{ id: string; data: Partial<UnifiedLocationType> }>;
-}): Promise<UnifiedLocationType[]> => {
+  data: Array<{ id: string; data: Partial<UnifiedTaxRateType> }>;
+}): Promise<UnifiedTaxRateType[]> => {
   try {
     return [];
   } catch (error) {
@@ -187,7 +187,7 @@ const bulk_delete = async (props: {
   }
 };
 
-export const locations = {
+export const tax_rates = {
   list,
   retrieve,
   create,
