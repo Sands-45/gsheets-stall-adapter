@@ -1,15 +1,15 @@
 import { BASE_URL } from "@/constants/default";
 import { get_error_message } from "@/lib/utils";
 import type { ConnectorConfigType } from "@/types/auth";
-import type { UnifiedTaxRegionType } from "@use-stall/types";
+import type { UnifiedTaxClass } from "@use-stall/types";
 
 const list = async (props: {
   connector_config: ConnectorConfigType;
   query?: string;
-}): Promise<UnifiedTaxRegionType[]> => {
+}): Promise<UnifiedTaxClass[]> => {
   try {
     const { connector_config, query } = props;
-    const endpoint = `${BASE_URL}/taxes/regions?${query}`;
+    const endpoint = `${BASE_URL}/taxes/classes?${query}`;
 
     const res = await fetch(endpoint, {
       headers: {
@@ -36,10 +36,10 @@ const list = async (props: {
 const retrieve = async (props: {
   connector_config: ConnectorConfigType;
   id: string;
-}): Promise<UnifiedTaxRegionType> => {
+}): Promise<UnifiedTaxClass> => {
   try {
     const { connector_config, id } = props;
-    const endpoint = `${BASE_URL}/taxes/regions?id=${id}`;
+    const endpoint = `${BASE_URL}/taxes/classes?id=${id}`;
 
     const res = await fetch(endpoint, {
       headers: {
@@ -55,7 +55,7 @@ const retrieve = async (props: {
       const message = data?.error || "We ran into an error !";
       throw new Error(message);
     }
-    return data as UnifiedTaxRegionType;
+    return data as UnifiedTaxClass;
   } catch (error) {
     throw error;
   }
@@ -63,11 +63,11 @@ const retrieve = async (props: {
 
 const create = async (props: {
   connector_config: ConnectorConfigType;
-  data: UnifiedTaxRegionType;
-}): Promise<UnifiedTaxRegionType> => {
+  data: UnifiedTaxClass;
+}): Promise<UnifiedTaxClass> => {
   try {
-    const { connector_config, data: region } = props;
-    const endpoint = `${BASE_URL}/taxes/regions`;
+    const { connector_config, data: tax_class } = props;
+    const endpoint = `${BASE_URL}/taxes/classes`;
 
     const res = await fetch(endpoint, {
       method: "POST",
@@ -75,8 +75,9 @@ const create = async (props: {
         Authorization: `Bearer ${connector_config.auth_token}`,
         spreadsheet_id: connector_config.api_key_value,
         refresh_token: connector_config.token,
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(region),
+      body: JSON.stringify(tax_class),
     });
 
     const data = (await res.json()) as unknown as any;
@@ -86,7 +87,7 @@ const create = async (props: {
       throw new Error(message);
     }
 
-    return data as UnifiedTaxRegionType;
+    return data as UnifiedTaxClass;
   } catch (error) {
     throw error;
   }
@@ -95,11 +96,11 @@ const create = async (props: {
 const update = async (props: {
   connector_config: ConnectorConfigType;
   id: string;
-  data: Partial<UnifiedTaxRegionType>;
-}): Promise<UnifiedTaxRegionType> => {
+  data: Partial<UnifiedTaxClass>;
+}): Promise<UnifiedTaxClass> => {
   try {
-    const { connector_config, data: region, id } = props;
-    const endpoint = `${BASE_URL}/taxes/regions/${id}`;
+    const { connector_config, data: tax_class, id } = props;
+    const endpoint = `${BASE_URL}/taxes/classes/${id}`;
 
     const res = await fetch(endpoint, {
       method: "PUT",
@@ -107,8 +108,9 @@ const update = async (props: {
         Authorization: `Bearer ${connector_config.auth_token}`,
         spreadsheet_id: connector_config.api_key_value,
         refresh_token: connector_config.token,
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(region),
+      body: JSON.stringify(tax_class),
     });
 
     const data = (await res.json()) as unknown as any;
@@ -118,7 +120,7 @@ const update = async (props: {
       throw new Error(message);
     }
 
-    return data as UnifiedTaxRegionType;
+    return data as UnifiedTaxClass;
   } catch (error) {
     throw error;
   }
@@ -130,7 +132,7 @@ const _delete = async (props: {
 }): Promise<void> => {
   try {
     const { connector_config, id } = props;
-    const endpoint = `${BASE_URL}/taxes/regions/${id}`;
+    const endpoint = `${BASE_URL}/taxes/classes/${id}`;
 
     const res = await fetch(endpoint, {
       method: "DELETE",
@@ -156,10 +158,31 @@ const _delete = async (props: {
 
 const bulk_create = async (props: {
   connector_config: ConnectorConfigType;
-  data: UnifiedTaxRegionType[];
-}): Promise<UnifiedTaxRegionType[]> => {
+  data: UnifiedTaxClass[];
+}): Promise<any> => {
   try {
-    return [];
+    const { connector_config, data: tax_classes } = props;
+    const endpoint = `${BASE_URL}/taxes/classes/bulk`;
+
+    const res = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${connector_config.auth_token}`,
+        spreadsheet_id: connector_config.api_key_value,
+        refresh_token: connector_config.token,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(tax_classes),
+    });
+
+    const data = (await res.json()) as unknown as any;
+
+    if (!res.ok) {
+      const message = data?.error || "We ran into an error !";
+      throw new Error(message);
+    }
+
+    return data;
   } catch (error) {
     throw error;
   }
@@ -167,10 +190,31 @@ const bulk_create = async (props: {
 
 const bulk_update = async (props: {
   connector_config: ConnectorConfigType;
-  data: Array<{ id: string; data: Partial<UnifiedTaxRegionType> }>;
-}): Promise<UnifiedTaxRegionType[]> => {
+  data: Array<{ id: string; updates: Partial<UnifiedTaxClass> }>;
+}): Promise<UnifiedTaxClass[]> => {
   try {
-    return [];
+    const { connector_config, data: updates } = props;
+    const endpoint = `${BASE_URL}/taxes/classes/bulk`;
+
+    const res = await fetch(endpoint, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${connector_config.auth_token}`,
+        spreadsheet_id: connector_config.api_key_value,
+        refresh_token: connector_config.token,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updates),
+    });
+
+    const data = (await res.json()) as unknown as any;
+
+    if (!res.ok) {
+      const message = data?.error || "We ran into an error !";
+      throw new Error(message);
+    }
+
+    return data as UnifiedTaxClass[];
   } catch (error) {
     throw error;
   }
@@ -179,15 +223,36 @@ const bulk_update = async (props: {
 const bulk_delete = async (props: {
   connector_config: ConnectorConfigType;
   ids: string[];
-}): Promise<void> => {
+}): Promise<any> => {
   try {
-    return;
+    const { connector_config, ids } = props;
+    const endpoint = `${BASE_URL}/taxes/classes/bulk`;
+
+    const res = await fetch(endpoint, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${connector_config.auth_token}`,
+        spreadsheet_id: connector_config.api_key_value,
+        refresh_token: connector_config.token,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ids }),
+    });
+
+    const data = (await res.json()) as unknown as any;
+
+    if (!res.ok) {
+      const message = data?.error || "We ran into an error !";
+      throw new Error(message);
+    }
+
+    return data;
   } catch (error) {
     throw error;
   }
 };
 
-export const tax_regions = {
+export const tax_classes = {
   list,
   retrieve,
   create,

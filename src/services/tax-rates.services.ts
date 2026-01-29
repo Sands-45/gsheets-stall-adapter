@@ -1,12 +1,12 @@
 import { BASE_URL } from "@/constants/default";
 import { get_error_message } from "@/lib/utils";
 import type { ConnectorConfigType } from "@/types/auth";
-import type { UnifiedTaxRateType } from "@use-stall/types";
+import type { UnifiedTaxRate } from "@use-stall/types";
 
 const list = async (props: {
   connector_config: ConnectorConfigType;
   query?: string;
-}): Promise<UnifiedTaxRateType[]> => {
+}): Promise<UnifiedTaxRate[]> => {
   try {
     const { connector_config, query } = props;
     const endpoint = `${BASE_URL}/taxes/rates?${query}`;
@@ -36,7 +36,7 @@ const list = async (props: {
 const retrieve = async (props: {
   connector_config: ConnectorConfigType;
   id: string;
-}): Promise<UnifiedTaxRateType> => {
+}): Promise<UnifiedTaxRate> => {
   try {
     const { connector_config, id } = props;
     const endpoint = `${BASE_URL}/taxes/rates?id=${id}`;
@@ -55,7 +55,7 @@ const retrieve = async (props: {
       const message = data?.error || "We ran into an error !";
       throw new Error(message);
     }
-    return data as UnifiedTaxRateType;
+    return data as UnifiedTaxRate;
   } catch (error) {
     throw error;
   }
@@ -63,8 +63,8 @@ const retrieve = async (props: {
 
 const create = async (props: {
   connector_config: ConnectorConfigType;
-  data: UnifiedTaxRateType;
-}): Promise<UnifiedTaxRateType> => {
+  data: UnifiedTaxRate;
+}): Promise<UnifiedTaxRate> => {
   try {
     const { connector_config, data: rate } = props;
     const endpoint = `${BASE_URL}/taxes/rates`;
@@ -75,6 +75,7 @@ const create = async (props: {
         Authorization: `Bearer ${connector_config.auth_token}`,
         spreadsheet_id: connector_config.api_key_value,
         refresh_token: connector_config.token,
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(rate),
     });
@@ -86,7 +87,7 @@ const create = async (props: {
       throw new Error(message);
     }
 
-    return data as UnifiedTaxRateType;
+    return data as UnifiedTaxRate;
   } catch (error) {
     throw error;
   }
@@ -95,8 +96,8 @@ const create = async (props: {
 const update = async (props: {
   connector_config: ConnectorConfigType;
   id: string;
-  data: Partial<UnifiedTaxRateType>;
-}): Promise<UnifiedTaxRateType> => {
+  data: Partial<UnifiedTaxRate>;
+}): Promise<UnifiedTaxRate> => {
   try {
     const { connector_config, data: rate, id } = props;
     const endpoint = `${BASE_URL}/taxes/rates/${id}`;
@@ -107,6 +108,7 @@ const update = async (props: {
         Authorization: `Bearer ${connector_config.auth_token}`,
         spreadsheet_id: connector_config.api_key_value,
         refresh_token: connector_config.token,
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(rate),
     });
@@ -118,7 +120,7 @@ const update = async (props: {
       throw new Error(message);
     }
 
-    return data as UnifiedTaxRateType;
+    return data as UnifiedTaxRate;
   } catch (error) {
     throw error;
   }
@@ -156,10 +158,31 @@ const _delete = async (props: {
 
 const bulk_create = async (props: {
   connector_config: ConnectorConfigType;
-  data: UnifiedTaxRateType[];
-}): Promise<UnifiedTaxRateType[]> => {
+  data: UnifiedTaxRate[];
+}): Promise<any> => {
   try {
-    return [];
+    const { connector_config, data: rates } = props;
+    const endpoint = `${BASE_URL}/taxes/rates/bulk`;
+
+    const res = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${connector_config.auth_token}`,
+        spreadsheet_id: connector_config.api_key_value,
+        refresh_token: connector_config.token,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(rates),
+    });
+
+    const data = (await res.json()) as unknown as any;
+
+    if (!res.ok) {
+      const message = data?.error || "We ran into an error !";
+      throw new Error(message);
+    }
+
+    return data;
   } catch (error) {
     throw error;
   }
@@ -167,10 +190,31 @@ const bulk_create = async (props: {
 
 const bulk_update = async (props: {
   connector_config: ConnectorConfigType;
-  data: Array<{ id: string; data: Partial<UnifiedTaxRateType> }>;
-}): Promise<UnifiedTaxRateType[]> => {
+  data: Array<{ id: string; updates: Partial<UnifiedTaxRate> }>;
+}): Promise<UnifiedTaxRate[]> => {
   try {
-    return [];
+    const { connector_config, data: updates } = props;
+    const endpoint = `${BASE_URL}/taxes/rates/bulk`;
+
+    const res = await fetch(endpoint, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${connector_config.auth_token}`,
+        spreadsheet_id: connector_config.api_key_value,
+        refresh_token: connector_config.token,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updates),
+    });
+
+    const data = (await res.json()) as unknown as any;
+
+    if (!res.ok) {
+      const message = data?.error || "We ran into an error !";
+      throw new Error(message);
+    }
+
+    return data as UnifiedTaxRate[];
   } catch (error) {
     throw error;
   }
@@ -179,9 +223,30 @@ const bulk_update = async (props: {
 const bulk_delete = async (props: {
   connector_config: ConnectorConfigType;
   ids: string[];
-}): Promise<void> => {
+}): Promise<any> => {
   try {
-    return;
+    const { connector_config, ids } = props;
+    const endpoint = `${BASE_URL}/taxes/rates/bulk`;
+
+    const res = await fetch(endpoint, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${connector_config.auth_token}`,
+        spreadsheet_id: connector_config.api_key_value,
+        refresh_token: connector_config.token,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ids }),
+    });
+
+    const data = (await res.json()) as unknown as any;
+
+    if (!res.ok) {
+      const message = data?.error || "We ran into an error !";
+      throw new Error(message);
+    }
+
+    return data;
   } catch (error) {
     throw error;
   }

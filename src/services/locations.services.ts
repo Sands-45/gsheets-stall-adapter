@@ -75,6 +75,7 @@ const create = async (props: {
         Authorization: `Bearer ${connector_config.auth_token}`,
         spreadsheet_id: connector_config.api_key_value,
         refresh_token: connector_config.token,
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(location),
     });
@@ -107,6 +108,7 @@ const update = async (props: {
         Authorization: `Bearer ${connector_config.auth_token}`,
         spreadsheet_id: connector_config.api_key_value,
         refresh_token: connector_config.token,
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(location),
     });
@@ -157,9 +159,30 @@ const _delete = async (props: {
 const bulk_create = async (props: {
   connector_config: ConnectorConfigType;
   data: UnifiedLocationType[];
-}): Promise<UnifiedLocationType[]> => {
+}): Promise<any> => {
   try {
-    return [];
+    const { connector_config, data: locations } = props;
+    const endpoint = `${BASE_URL}/locations/bulk`;
+
+    const res = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${connector_config.auth_token}`,
+        spreadsheet_id: connector_config.api_key_value,
+        refresh_token: connector_config.token,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(locations),
+    });
+
+    const data = (await res.json()) as unknown as any;
+
+    if (!res.ok) {
+      const message = data?.error || "We ran into an error !";
+      throw new Error(message);
+    }
+
+    return data;
   } catch (error) {
     throw error;
   }
@@ -167,10 +190,31 @@ const bulk_create = async (props: {
 
 const bulk_update = async (props: {
   connector_config: ConnectorConfigType;
-  data: Array<{ id: string; data: Partial<UnifiedLocationType> }>;
+  data: Array<{ id: string; updates: Partial<UnifiedLocationType> }>;
 }): Promise<UnifiedLocationType[]> => {
   try {
-    return [];
+    const { connector_config, data: updates } = props;
+    const endpoint = `${BASE_URL}/locations/bulk`;
+
+    const res = await fetch(endpoint, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${connector_config.auth_token}`,
+        spreadsheet_id: connector_config.api_key_value,
+        refresh_token: connector_config.token,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updates),
+    });
+
+    const data = (await res.json()) as unknown as any;
+
+    if (!res.ok) {
+      const message = data?.error || "We ran into an error !";
+      throw new Error(message);
+    }
+
+    return data as UnifiedLocationType[];
   } catch (error) {
     throw error;
   }
@@ -179,9 +223,30 @@ const bulk_update = async (props: {
 const bulk_delete = async (props: {
   connector_config: ConnectorConfigType;
   ids: string[];
-}): Promise<void> => {
+}): Promise<any> => {
   try {
-    return;
+    const { connector_config, ids } = props;
+    const endpoint = `${BASE_URL}/locations/bulk`;
+
+    const res = await fetch(endpoint, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${connector_config.auth_token}`,
+        spreadsheet_id: connector_config.api_key_value,
+        refresh_token: connector_config.token,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ids }),
+    });
+
+    const data = (await res.json()) as unknown as any;
+
+    if (!res.ok) {
+      const message = data?.error || "We ran into an error !";
+      throw new Error(message);
+    }
+
+    return data;
   } catch (error) {
     throw error;
   }

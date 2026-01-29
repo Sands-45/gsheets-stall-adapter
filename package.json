@@ -14,7 +14,7 @@
   },
   "devDependencies": {
     "@types/bun": "latest",
-    "@use-stall/types": "^0.2.9",
+    "@use-stall/types": "^0.2.15",
     "chokidar": "^4.0.3"
   },
   "peerDependencies": {
