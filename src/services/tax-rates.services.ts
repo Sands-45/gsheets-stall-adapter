@@ -67,7 +67,7 @@ const create = async (props: {
 }): Promise<UnifiedTaxRate> => {
   try {
     const { connector_config, data: rate } = props;
-    const endpoint = `${BASE_URL}/taxes/rates`;
+    const endpoint = `${BASE_URL}/taxes/rate`;
 
     const res = await fetch(endpoint, {
       method: "POST",
@@ -100,7 +100,7 @@ const update = async (props: {
 }): Promise<UnifiedTaxRate> => {
   try {
     const { connector_config, data: rate, id } = props;
-    const endpoint = `${BASE_URL}/taxes/rates/${id}`;
+    const endpoint = `${BASE_URL}/taxes/rate/${id}`;
 
     const res = await fetch(endpoint, {
       method: "PUT",
@@ -132,7 +132,7 @@ const _delete = async (props: {
 }): Promise<void> => {
   try {
     const { connector_config, id } = props;
-    const endpoint = `${BASE_URL}/taxes/rates/${id}`;
+    const endpoint = `${BASE_URL}/taxes/rate/${id}`;
 
     const res = await fetch(endpoint, {
       method: "DELETE",

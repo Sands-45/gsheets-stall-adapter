@@ -67,7 +67,7 @@ const create = async (props: {
 }): Promise<UnifiedLocationType> => {
   try {
     const { connector_config, data: location } = props;
-    const endpoint = `${BASE_URL}/locations`;
+    const endpoint = `${BASE_URL}/locations/location`;
 
     const res = await fetch(endpoint, {
       method: "POST",
@@ -100,7 +100,7 @@ const update = async (props: {
 }): Promise<UnifiedLocationType> => {
   try {
     const { connector_config, data: location, id } = props;
-    const endpoint = `${BASE_URL}/locations/${id}`;
+    const endpoint = `${BASE_URL}/locations/location/${id}`;
 
     const res = await fetch(endpoint, {
       method: "PUT",
@@ -132,7 +132,7 @@ const _delete = async (props: {
 }): Promise<void> => {
   try {
     const { connector_config, id } = props;
-    const endpoint = `${BASE_URL}/locations/${id}`;
+    const endpoint = `${BASE_URL}/locations/location/${id}`;
 
     const res = await fetch(endpoint, {
       method: "DELETE",
