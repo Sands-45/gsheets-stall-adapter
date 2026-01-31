@@ -177,12 +177,12 @@ const bulk_create = async (props: {
 
     const data = (await res.json()) as unknown as any;
 
-    if (!res.ok) {
-      const message = data?.error || "We ran into an error !";
+    if (!res.ok || !data.created) {
+      const message = get_error_message(data);
       throw new Error(message);
     }
 
-    return data;
+    return data.created as UnifiedTaxClass[];
   } catch (error) {
     throw error;
   }
@@ -210,7 +210,7 @@ const bulk_update = async (props: {
     const data = (await res.json()) as unknown as any;
 
     if (!res.ok) {
-      const message = data?.error || "We ran into an error !";
+      const message = get_error_message(data);
       throw new Error(message);
     }
 

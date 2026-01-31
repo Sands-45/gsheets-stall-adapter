@@ -22,7 +22,7 @@ const list = async (props: {
     const data = (await res.json()) as unknown as any;
 
     if (!res.ok) {
-      const message = data?.error || "We ran into an error !";
+      const message = get_error_message(data);
       throw new Error(message);
     }
 
@@ -52,7 +52,7 @@ const retrieve = async (props: {
     const data = (await res.json()) as unknown as any;
 
     if (!res.ok) {
-      const message = data?.error || "We ran into an error !";
+      const message = get_error_message(data);
       throw new Error(message);
     }
     return data as UnifiedLocationType;
@@ -83,7 +83,7 @@ const create = async (props: {
     const data = (await res.json()) as unknown as any;
 
     if (!res.ok) {
-      const message = data?.error || "We ran into an error !";
+      const message = get_error_message(data);
       throw new Error(message);
     }
 
@@ -116,7 +116,7 @@ const update = async (props: {
     const data = (await res.json()) as unknown as any;
 
     if (!res.ok) {
-      const message = data?.error || "We ran into an error !";
+      const message = get_error_message(data);
       throw new Error(message);
     }
 
@@ -146,7 +146,7 @@ const _delete = async (props: {
     const data = (await res.json()) as unknown as any;
 
     if (!res.ok) {
-      const message = data?.error || "We ran into an error !";
+      const message = get_error_message(data);
       throw new Error(message);
     }
 
@@ -177,12 +177,12 @@ const bulk_create = async (props: {
 
     const data = (await res.json()) as unknown as any;
 
-    if (!res.ok) {
-      const message = data?.error || "We ran into an error !";
+    if (!res.ok || !data.created) {
+      const message = get_error_message(data);
       throw new Error(message);
     }
 
-    return data;
+    return data.created;
   } catch (error) {
     throw error;
   }
@@ -210,7 +210,7 @@ const bulk_update = async (props: {
     const data = (await res.json()) as unknown as any;
 
     if (!res.ok) {
-      const message = data?.error || "We ran into an error !";
+      const message = get_error_message(data);
       throw new Error(message);
     }
 
@@ -242,7 +242,7 @@ const bulk_delete = async (props: {
     const data = (await res.json()) as unknown as any;
 
     if (!res.ok) {
-      const message = data?.error || "We ran into an error !";
+      const message = get_error_message(data);
       throw new Error(message);
     }
 
