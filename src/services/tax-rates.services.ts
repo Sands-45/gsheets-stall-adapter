@@ -172,7 +172,7 @@ const bulk_create = async (props: {
         refresh_token: connector_config.token,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(rates),
+      body: JSON.stringify({ data: rates }),
     });
 
     const data = (await res.json()) as unknown as any;
@@ -204,7 +204,7 @@ const bulk_update = async (props: {
         refresh_token: connector_config.token,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(updates),
+      body: JSON.stringify({data:updates}),
     });
 
     const data = (await res.json()) as unknown as any;
